@@ -810,6 +810,10 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      set_window_services: {
+        Args: { p_services: string[]; p_window: string }
+        Returns: undefined
+      }
       set_window_status: {
         Args: {
           p_status: Database["public"]["Enums"]["window_status"]
