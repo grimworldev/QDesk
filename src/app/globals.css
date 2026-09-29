@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Fonts (Geist comes from next/font in layout.tsx) */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Design tokens. Each one becomes a Tailwind class (bg-primary, text-muted, ...)
+   and stays available as a CSS variable. */
+@theme static {
+  /* Surfaces & text */
+  --color-background: #f7f5f1;
+  --color-surface: #ffffff;
+  --color-foreground: #1c2530;
+  --color-muted: #6b7480;
+  --color-border: #e6e1d8;
+
+  /* Primary: midnight navy */
+  --color-primary: #1f3350;
+  --color-primary-hover: #182740;
+  --color-primary-foreground: #ffffff;
+  --color-primary-50: #f0f4f9;
+  --color-primary-100: #dbe4f0;
+  --color-primary-200: #b9cbe1;
+  --color-primary-300: #8ba9cb;
+  --color-primary-400: #5c82b0;
+  --color-primary-500: #3d6494;
+  --color-primary-600: #2e4f7a;
+  --color-primary-700: #263f62;
+  --color-primary-800: #1f3350;
+  --color-primary-900: #182740;
+  --color-primary-950: #0f1a2c;
+
+  /* Accent: champagne gold (use sparingly) */
+  --color-accent: #b98a2e;
+  --color-accent-foreground: #ffffff;
+  --color-accent-50: #fbf7ee;
+  --color-accent-100: #f5ebd2;
+  --color-accent-200: #ecd7a5;
+  --color-accent-300: #e0bd72;
+  --color-accent-400: #d4a64a;
+  --color-accent-500: #b98a2e;
+  --color-accent-600: #a0722a;
+  --color-accent-700: #7f5824;
+
+  /* Status */
+  --color-success: #2f7d5b;
+  --color-warning: #b7791f;
+  --color-danger: #b4453b;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Make plain `border` use our border color instead of black */
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-border);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Reusable pieces written as plain CSS (no @apply) */
+@layer components {
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px rgb(28 37 48 / 0.06);
+  }
+
+  .label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-foreground);
+  }
+
+  .input {
+    width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .input::placeholder {
+    color: var(--color-muted);
+    opacity: 0.6;
+  }
+
+  .input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+  }
+
+  .btn-primary,
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    padding: 0.625rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s, border-color 0.15s;
+  }
+
+  .btn-primary:disabled,
+  .btn-outline:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: var(--color-primary-foreground);
+    border: 1px solid transparent;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+  }
+
+  .btn-outline {
+    background: var(--color-surface);
+    color: var(--color-foreground);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-outline:hover:not(:disabled) {
+    background: var(--color-primary-50);
+  }
 }
